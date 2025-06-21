@@ -7,7 +7,8 @@ import datetime
 app = Flask(__name__)
 CORS(app)  
 
-client = MongoClient("mongodb+srv://meghnamadhu2004:Meg2402@cluster0.kxegcng.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient("mongodb+srv://meghnamadhu2004:Meg2402@cluster0.kxegcng.mongodb.net/?retryWrites=true&w=majority&tls=true")
+
 db = client["quizApp"]
 questions_col = db["questions"]
 leaderboard_col = db["leaderboard"]
