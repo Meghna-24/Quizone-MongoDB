@@ -55,9 +55,11 @@ def login():
 def get_questions():
     questions = []
     for q in questions_col.find():
-        q["_id"] = str(q["_id"])  # Convert ObjectId to string
+        q["_id"] = str(q["_id"])
         questions.append(q)
+    print("Questions sent:", questions)  # Debug
     return jsonify(questions)
+
 
 
 #UPDATE
