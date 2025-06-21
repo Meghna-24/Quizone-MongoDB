@@ -10,7 +10,8 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.add("visible");
 }
 
-// 🔄 Toggle Login/Register UI
+
+// Toggle Login/Register UI
 function updateAuthUI() {
     document.getElementById("auth-title").textContent = isLoginMode ? "Login" : "Register";
     document.getElementById("login-btn").textContent = isLoginMode ? "Login" : "Register";
@@ -42,7 +43,7 @@ document.getElementById("auth-form").addEventListener("submit", async (e) => {
 
 async function registerUser(email, password) {
     try {
-        const res = await fetch("http://127.0.0.1:5000/register", {
+        const res = await fetch("https://web-production-93539.up.railway.app/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -59,7 +60,7 @@ async function registerUser(email, password) {
 
 async function loginUser(email, password) {
     try {
-        const res = await fetch("http://127.0.0.1:5000/login", {
+        const res = await fetch("https://web-production-93539.up.railway.app/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -80,17 +81,17 @@ async function loginUser(email, password) {
     }
 }
 
-// 🧠 Fetch Questions
+// Fetch Questions
 async function fetchQuestions() {
     try {
-        const res = await fetch("http://127.0.0.1:5000/questions");
+        const res = await fetch("https://web-production-93539.up.railway.app/questions");
         questions = await res.json();
     } catch (err) {
         alert("Failed to fetch questions: " + err.message);
     }
 }
 
-// ▶️ Start Quiz
+// Start Quiz
 async function startQuiz() {
     await fetchQuestions();
     if (questions.length === 0) {
@@ -102,7 +103,7 @@ async function startQuiz() {
     loadQuestion();
 }
 
-// ❓ Load Question
+// Load Question
 function loadQuestion() {
     const q = questions[currentQuestion];
     const questionText = document.getElementById("question-text");
@@ -129,7 +130,7 @@ function loadQuestion() {
     });
 }
 
-// ✅ Option Selection
+//Option Selection
 function selectOption(selectedBtn, correctAnswer) {
     document.querySelectorAll(".option").forEach(btn => btn.classList.remove("selected"));
     selectedBtn.classList.add("selected");
@@ -138,7 +139,7 @@ function selectOption(selectedBtn, correctAnswer) {
     if (selectedBtn.textContent === correctAnswer) score++;
 }
 
-// ⏭ Next Question
+// Next Question
 document.getElementById("next-btn").addEventListener("click", () => {
     currentQuestion++;
     if (currentQuestion < questions.length) {
@@ -148,7 +149,7 @@ document.getElementById("next-btn").addEventListener("click", () => {
     }
 });
 
-// 🏁 Show Results
+// Show Results
 function showResults() {
     showScreen("result-screen");
     document.getElementById("final-score").textContent = `${score}/${questions.length}`;
@@ -160,7 +161,7 @@ function showResults() {
     });
 }
 
-// 🔁 Reset Quiz
+// Reset Quiz
 document.getElementById("play-again-btn").addEventListener("click", () => {
     currentQuestion = 0;
     score = 0;
@@ -169,14 +170,14 @@ document.getElementById("play-again-btn").addEventListener("click", () => {
     document.getElementById("leaderboard-list").innerHTML = "";
 });
 
-// 🏆 Leaderboard Submission
+// Leaderboard Submission
 document.getElementById("leaderboard-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     const username = document.getElementById("username").value.trim();
     if (!username) return;
 
     try {
-        await fetch("http://127.0.0.1:5000/submit", {
+        await fetch("https://web-production-93539.up.railway.app/submit", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -191,10 +192,10 @@ document.getElementById("leaderboard-form").addEventListener("submit", async (e)
     }
 });
 
-// 🏆 Load Leaderboard
+// Load Leaderboard
 async function loadLeaderboard() {
     try {
-        const res = await fetch("http://127.0.0.1:5000/leaderboard");
+        const res = await fetch("https://web-production-93539.up.railway.app/leaderboard");
         const topScores = await res.json();
         const leaderboardList = document.getElementById("leaderboard-list");
         leaderboardList.innerHTML = "";
@@ -208,7 +209,7 @@ async function loadLeaderboard() {
     }
 }
 
-// ✏️ Edit Question
+// Edit Question
 async function editCurrentQuestion() {
     const q = questions[currentQuestion];
     const newQuestion = prompt("Edit question:", q.question);
@@ -228,7 +229,7 @@ async function editCurrentQuestion() {
     }
 
     try {
-        await fetch(`http://127.0.0.1:5000/question/${q._id}`, {
+        await fetch(`https://web-production-93539.up.railway.app/question/${q._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -239,6 +240,7 @@ async function editCurrentQuestion() {
                 correctAnswer: newCorrect
             })
         });
+
         alert("Question updated!");
         await fetchQuestions();
         loadQuestion();
@@ -247,7 +249,8 @@ async function editCurrentQuestion() {
     }
 }
 
-// 🗑️ Delete Question
+// Delete Question
+// Delete Question
 async function deleteCurrentQuestion() {
     const q = questions[currentQuestion];
     if (!q._id) {
@@ -260,7 +263,7 @@ async function deleteCurrentQuestion() {
     if (!confirmDelete) return;
 
     try {
-        const res = await fetch(`http://127.0.0.1:5000/question/${q._id}`, {
+        const res = await fetch(`https://web-production-93539.up.railway.app/question/${q._id}`, {
             method: "DELETE"
         });
 
@@ -278,7 +281,7 @@ async function deleteCurrentQuestion() {
     }
 }
 
-
+// ✅ DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
     showScreen("auth-screen");
 });
