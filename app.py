@@ -113,7 +113,11 @@ def get_leaderboard():
     return jsonify([{ "name": entry["name"], "score": entry["score"] } for entry in top_scores])
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    import os
+
+port = int(os.environ.get("PORT", 5000))
+app.run(host="0.0.0.0", port=port)
+
 
 
 from flask import Flask, request, jsonify, send_from_directory
